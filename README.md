@@ -1,5 +1,6 @@
 # ESPEasy
 This is a fork of Easy MultiSensor device based on ESP8266
+Forked from the Build 113
 Regarding ESPEasy stable versions including libraries are currently on SoureForge:
 - http://sourceforge.net/projects/espeasy/
 - Wiki: http://www.esp8266.nu
@@ -19,3 +20,7 @@ Regarding ESPEasy stable versions including libraries are currently on SoureForg
     - %sysname% is replaced by the name of the device
     - %valname% is replaced by the name of the variable that sent his value
     - %value% is replaced by the value of the variable
+- Wifi Access Point :
+  * When turning into the AP mode, if the name of the device is already Define the the AP name is define with this value.
+- Build version :
+  * Build version is appended with the "Fork olileger" token
