@@ -1,0 +1,9 @@
+{
+    "scripts" :
+    {
+        "Build"     : "TOOLS_BUILD.BAT",
+        "Upload"    : "TOOLS_UPLOAD.BAT",
+        "git push"  : "git push fork generichttp",
+        "git pull"  : "git pull"
+    }
+}
