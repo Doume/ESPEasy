@@ -3,7 +3,7 @@
     {
         "Build"     : "TOOLS_BUILD.BAT",
         "Upload"    : "TOOLS_UPLOAD.BAT",
-        "git push"  : "git push fork generichttp",
+        "git push"  : "git push origin master",
         "git pull"  : "git pull"
     }
 }
