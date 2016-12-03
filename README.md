@@ -20,7 +20,7 @@ Regarding ESPEasy stable versions including libraries are currently on SoureForg
     - %sysname% is replaced by the name of the device
     - %valname% is replaced by the name of the variable that sent his value
     - %value% is replaced by the value of the variable
-- Wifi Access Point :
+- Wifi Access Point with System Name :
   * When turning into the AP mode, if the name of the device is already Define the the AP name is define with this value.
-- Build version :
+- Build version with my Name :-) :
   * Build version is appended with the "Fork olileger" token
