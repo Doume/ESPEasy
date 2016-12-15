@@ -19,12 +19,6 @@ boolean CPlugin_008(byte function, struct EventStruct *event, String& string)
         Protocol[protocolCount].usesAccount = false;
         Protocol[protocolCount].usesPassword = false;
         Protocol[protocolCount].defaultPort = 80;
-
-        // HTTP Request : full request feature.
-        Protocol[protocolCount].selectHttpMethod = true;
-        Protocol[protocolCount].defineHttpUri = true;
-        Protocol[protocolCount].defineHttpHeader = true;
-        Protocol[protocolCount].defineHttpBody = true;
         break;
       }
 
@@ -107,30 +101,28 @@ boolean HTTPSend(struct EventStruct *event, byte varIndex, float value, unsigned
   if (ExtraTaskSettings.TaskDeviceValueNames[0][0] == 0)
     PluginCall(PLUGIN_GET_DEVICEVALUENAMES, event, dummyString);
 
-  //
-  // Build the payload.
-  //
-  // - HTTP Method, URL & Header.
-  String payload = String(Settings.HttpMethod) + " ";
-  payload += "http://";
-  payload += (Settings.UseDNS) ? String(Settings.ControllerHostName): String(host);
-  payload += (strlen(Settings.HttpUri) > 0) ? String(Settings.HttpUri) + " " : "/ ";
-  payload += "HTTP/1.1\r\n";
-  if (strlen(Settings.HttpHeader) > 0)
-    payload += Settings.HttpHeader;
-  ReplaceTokenByValue(payload, event, varIndex, value, longValue);
+  String url = "/";
+  url += Settings.MQTTpublish;
+  url.replace("%sysname%", URLEncode(Settings.Name));
+  url.replace("%tskname%", URLEncode(ExtraTaskSettings.TaskDeviceName));
+  url.replace("%id%", String(event->idx));
+  url.replace("%valname%", URLEncode(ExtraTaskSettings.TaskDeviceValueNames[varIndex]));
+  if (longValue)
+    url.replace("%value%", String(longValue));
+  else
+    url.replace("%value%", toString(value, ExtraTaskSettings.TaskDeviceValueDecimals[varIndex]));
 
-  // - Body
-  if (strlen(Settings.HttpBody) > 0)
-  {
-    String body = String(Settings.HttpBody);
-    ReplaceTokenByValue(body, event, varIndex, value, longValue);
-    payload += "\r\nContent-Length: " + String(body.length());
-    payload += "\r\n\r\n" + body;
-  }
+  url.toCharArray(log, 80);
+  addLog(LOG_LEVEL_DEBUG_MORE, log);
 
-  // Send the request to the server.
-  client.print(payload);
+  String hostName = host;
+  if (Settings.UseDNS)
+    hostName = Settings.ControllerHostName;
+    
+  // This will send the request to the server
+  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+               "Host: " + hostName + "\r\n" +
+               "Connection: close\r\n\r\n");
 
   unsigned long timer = millis() + 200;
   while (!client.available() && millis() < timer)
@@ -154,19 +146,4 @@ boolean HTTPSend(struct EventStruct *event, byte varIndex, float value, unsigned
 
   client.flush();
   client.stop();
-}
-
-//********************************************************************************
-// Remplace the token in a string by real value.
-//********************************************************************************
-void ReplaceTokenByValue(String& s, struct EventStruct *event, byte varIndex, float value, unsigned long longValue)
-{
-  s.replace("%sysname%", URLEncode(Settings.Name));
-  s.replace("%tskname%", URLEncode(ExtraTaskSettings.TaskDeviceName));
-  s.replace("%id%", String(event->idx));
-  s.replace("%valname%", URLEncode(ExtraTaskSettings.TaskDeviceValueNames[varIndex]));
-  if (longValue)
-    s.replace("%value%", String(longValue));
-  else
-    s.replace("%value%", toString(value, ExtraTaskSettings.TaskDeviceValueDecimals[varIndex]));
 }

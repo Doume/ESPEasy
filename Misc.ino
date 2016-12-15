@@ -2128,3 +2128,22 @@ void createRuleEvents(byte TaskIndex)
     rulesProcessing(eventString);
   }
 }
+
+//********************************************************************************
+// Replace the token in a string by real value.
+//********************************************************************************
+void ReplaceTokenByValue(String& s,
+                         struct EventStruct *event,
+                         byte varIndex,
+                         float value,
+                         unsigned long longValue)
+{
+  s.replace("%sysname%", URLEncode(Settings.Name));
+  s.replace("%tskname%", URLEncode(ExtraTaskSettings.TaskDeviceName));
+  s.replace("%id%", String(event->idx));
+  s.replace("%valname%", URLEncode(ExtraTaskSettings.TaskDeviceValueNames[varIndex]));
+  if (longValue)
+    s.replace("%value%", String(longValue));
+  else
+    s.replace("%value%", toString(value, ExtraTaskSettings.TaskDeviceValueDecimals[varIndex]));
+}

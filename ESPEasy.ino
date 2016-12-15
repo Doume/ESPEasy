@@ -114,9 +114,12 @@
 
 // HTTP Request field size for Settings.
 #define HTTP_METHOD_MAX_LEN         10
-#define HTTP_URI_MAX_LEN	          501
+#define HTTP_URL_MAX_LEN	          501
 #define HTTP_HEADER_MAX_LEN         501
 #define HTTP_BODY_MAX_LEN           501
+
+// TLS Support.
+#define TLS_THUMBPRINT_LEN          100
 
 // ********************************************************************************
 //   DO NOT CHANGE ANYTHING BELOW THIS LINE
@@ -211,6 +214,7 @@
 #define BOOT_CAUSE_EXT_WD                  10
 
 #include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
 #include <DNSServer.h>
 #include <WiFiUdp.h>
 #include <ESP8266WebServer.h>
@@ -275,6 +279,10 @@ struct SecurityStruct
   char          ControllerUser[26];
   char          ControllerPassword[64];
   char          Password[26];
+
+  // TLS Support.
+  char          TlsThumbprint[TLS_THUMBPRINT_LEN];
+
 } SecuritySettings;
 
 struct SettingsStruct
@@ -340,7 +348,7 @@ struct SettingsStruct
 
   // HTTP Request settings.
   char          HttpMethod[HTTP_METHOD_MAX_LEN];
-  char          HttpUri[HTTP_URI_MAX_LEN];
+  char          HttpUrl[HTTP_URL_MAX_LEN];
   char          HttpHeader[HTTP_HEADER_MAX_LEN];
   char          HttpBody[HTTP_BODY_MAX_LEN];
 
@@ -406,9 +414,12 @@ struct ProtocolStruct
 
   // HTTP Request protocol.
   boolean selectHttpMethod;
-  boolean defineHttpUri;
+  boolean defineHttpUrl;
   boolean defineHttpHeader;
   boolean defineHttpBody;
+
+  // TLS Support.
+  boolean defineTlsThumbprint;
 
 } Protocol[CPLUGIN_MAX];
 

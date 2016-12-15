@@ -321,9 +321,12 @@ void handle_config() {
   String controlleruser = WebServer.arg("controlleruser");
   String controllerpassword = WebServer.arg("controllerpassword");
 
+  // TLS Support.
+  String tlsthumbprint = WebServer.arg("tlsthumbprint");
+
   // HTTP Request : args received when form submitted.
   String httpmethod = WebServer.arg("httpmethod");
-  String httpuri = WebServer.arg("httpuri");
+  String httpurl = WebServer.arg("httpurl");
   String httpheader = WebServer.arg("httpheader");
   String httpbody = WebServer.arg("httpbody");
 
@@ -373,12 +376,20 @@ void handle_config() {
 
         Settings.ControllerPort = controllerport.toInt();
         
-        // HTTP Request : save the form input into the Settings.
+        // TLS Support : save the options.
         byte ProtocolIndex = getProtocolIndex(Settings.Protocol);
+        if (Protocol[ProtocolIndex].defineTlsThumbprint)
+        {
+          memset(SecuritySettings.TlsThumbprint, 0x00, sizeof(SecuritySettings.TlsThumbprint));
+          tlsthumbprint.replace("%20", " ");
+          strncpy(SecuritySettings.TlsThumbprint, tlsthumbprint.c_str(), sizeof(SecuritySettings.TlsThumbprint));
+        }
+
+        // HTTP Request : save the form input into the Settings.
         if (Protocol[ProtocolIndex].selectHttpMethod)
           strncpy(Settings.HttpMethod, httpmethod.c_str(), sizeof(Settings.HttpMethod));
-        if (Protocol[ProtocolIndex].defineHttpUri)
-          strncpy(Settings.HttpUri, httpuri.c_str(), sizeof(Settings.HttpUri));
+        if (Protocol[ProtocolIndex].defineHttpUrl)
+          strncpy(Settings.HttpUrl, httpurl.c_str(), sizeof(Settings.HttpUrl));
         if (Protocol[ProtocolIndex].defineHttpHeader)
           strncpy(Settings.HttpHeader, httpheader.c_str(), sizeof(Settings.HttpHeader));
         if (Protocol[ProtocolIndex].defineHttpBody)
@@ -450,46 +461,50 @@ void handle_config() {
 
   if (Settings.Protocol)
   {
-    byte choice = Settings.UseDNS;
-    String options[2];
-    options[0] = F("Use IP address");
-    options[1] = F("Use Hostname");
-    int optionValues[2];
-    optionValues[0] = 0;
-    optionValues[1] = 1;
-    reply += F("<TR><TD>Locate Controller:<TD><select name='usedns' LANGUAGE=javascript onchange=\"return dept_onchange(frmselect)\" >");
-    for (byte x = 0; x < 2; x++)
-    {
-      reply += F("<option value='");
-      reply += optionValues[x];
-      reply += "'";
-      if (choice == optionValues[x])
-        reply += F(" selected");
-      reply += ">";
-      reply += options[x];
-      reply += F("</option>");
-    }
-    reply += F("</select>");
-
-    if (Settings.UseDNS)
-    {
-      reply += F("<TR><TD>Controller Hostname:<TD><input type='text' name='controllerhostname' size='64' value='");
-      reply += Settings.ControllerHostName;
-      reply += F("'>");
-    }
-    else
-    {
-      reply += F("<TR><TD>Controller IP:<TD><input type='text' name='controllerip' value='");
-      sprintf_P(str, PSTR("%u.%u.%u.%u"), Settings.Controller_IP[0], Settings.Controller_IP[1], Settings.Controller_IP[2], Settings.Controller_IP[3]);
-      reply += str;
-      reply += F("'>");
-    }
-
-    reply += F("<TR><TD>Controller Port:<TD><input type='text' name='controllerport' value='");
-    reply += Settings.ControllerPort;
-    reply += F("'>");
-
+    // HTTP URL : bypass controller domain/ip + port.
     byte ProtocolIndex = getProtocolIndex(Settings.Protocol);
+    if (!Protocol[ProtocolIndex].defineHttpUrl)
+    {
+      byte choice = Settings.UseDNS;
+      String options[2];
+      options[0] = F("Use IP address");
+      options[1] = F("Use Hostname");
+      int optionValues[2];
+      optionValues[0] = 0;
+      optionValues[1] = 1;
+      reply += F("<TR><TD>Locate Controller:<TD><select name='usedns' LANGUAGE=javascript onchange=\"return dept_onchange(frmselect)\" >");
+      for (byte x = 0; x < 2; x++)
+      {
+        reply += F("<option value='");
+        reply += optionValues[x];
+        reply += "'";
+        if (choice == optionValues[x])
+          reply += F(" selected");
+        reply += ">";
+        reply += options[x];
+        reply += F("</option>");
+      }
+      reply += F("</select>");
+    
+      if (Settings.UseDNS)
+      {
+        reply += F("<TR><TD>Controller Hostname:<TD><input type='text' name='controllerhostname' size='64' value='");
+        reply += Settings.ControllerHostName;
+        reply += F("'>");
+      }
+      else
+      {
+        reply += F("<TR><TD>Controller IP:<TD><input type='text' name='controllerip' value='");
+        sprintf_P(str, PSTR("%u.%u.%u.%u"), Settings.Controller_IP[0], Settings.Controller_IP[1], Settings.Controller_IP[2], Settings.Controller_IP[3]);
+        reply += str;
+        reply += F("'>");
+      }
+
+      reply += F("<TR><TD>Controller Port:<TD><input type='text' name='controllerport' value='");
+      reply += Settings.ControllerPort;
+      reply += F("'>");
+    }
+
     if (Protocol[ProtocolIndex].usesAccount)
     {
       reply += F("<TR><TD>Controller User:<TD><input type='text' name='controlleruser' value='");
@@ -509,9 +524,9 @@ void handle_config() {
     //
     if (Protocol[ProtocolIndex].selectHttpMethod)
     {
-      String methods[] = { F("GET"), F("POST"), F("PUT") };
+      String methods[] = { F("POST"), F("PUT") };
       reply += F("<TR><TD>HTTP Method :<TD><select name='httpmethod'>");
-      for (int i=0; i < 3; i++)
+      for (int i=0; i < 2; i++)
       {
         reply += F("<option value='");
         reply += methods[i] + "'";
@@ -523,11 +538,19 @@ void handle_config() {
       reply += F("</select>");
     }
     
-    if (Protocol[ProtocolIndex].defineHttpUri)
+    if (Protocol[ProtocolIndex].defineHttpUrl)
     {
-      reply += F("<TR><TD>HTTP URI:<TD><input type='text' name='httpuri' maxlength='500' value='");
-      reply += Settings.HttpUri;
+      reply += F("<TR><TD>HTTP URL:<TD><input type='text' name='httpurl' maxlength='500' value='");
+      reply += Settings.HttpUrl;
       reply += F("'>");
+    }
+
+    // TLS : Thumbprint.
+    if (Protocol[ProtocolIndex].defineTlsThumbprint)
+    {
+      reply += F("<TR><TD>TLS Thumbprint:<TD><textarea name='tlsthumbprint' rows='4' cols='50' maxlength='100' wrap='hard'>");
+      reply += SecuritySettings.TlsThumbprint;
+      reply += F("</textarea>");
     }
 
     if (Protocol[ProtocolIndex].defineHttpHeader)
