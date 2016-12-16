@@ -117,8 +117,16 @@ void setupHttpClient(HTTPClient& client,
   if (h.startsWith("https"))
   {
     String f = String(SecuritySettings.TlsThumbprint);
-    addLog(LOG_LEVEL_DEBUG, String("TLS Fingerprint is ") + f);
-    client.begin(h, f);
+    if (f.length() > 0)
+    {
+      addLog(LOG_LEVEL_DEBUG, String("TLS Fingerprint is ") + f);
+      client.begin(h, f);
+    }
+    else
+    {
+      addLog(LOG_LEVEL_DEBUG, "HTTPS without TLS Fingerprint");
+      client.begin(h);
+    }
   }
   else
   {
