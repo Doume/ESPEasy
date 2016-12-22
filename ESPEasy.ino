@@ -121,6 +121,19 @@
 // TLS Support.
 #define TLS_THUMBPRINT_LEN          100
 
+// Plugins.
+/*
+#define CPLUGIN_001
+#define CPLUGIN_002
+#define CPLUGIN_003
+#define CPLUGIN_004
+#define CPLUGIN_005
+#define CPLUGIN_006
+#define CPLUGIN_007
+#define CPLUGIN_008
+*/
+#define CPLUGIN_009
+
 // ********************************************************************************
 //   DO NOT CHANGE ANYTHING BELOW THIS LINE
 // ********************************************************************************
