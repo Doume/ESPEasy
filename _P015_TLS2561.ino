@@ -171,7 +171,7 @@ boolean Plugin_015(byte function, struct EventStruct *event, String& string)
             addLog(LOG_LEVEL_INFO,log);
           } else {
             String log = F("TLS2561 : Read Error #");
-            log += String(ret,DEC);
+            log += String(ret,10);
             addLog(LOG_LEVEL_INFO,log);
           }
         }

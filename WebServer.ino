@@ -330,6 +330,9 @@ void handle_config() {
   String httpheader = WebServer.arg("httpheader");
   String httpbody = WebServer.arg("httpbody");
 
+  // Azure IoT Hub Support.
+  String cnxstring = WebServer.arg("cnxstring");
+
   String sensordelay = WebServer.arg("delay");
   String deepsleep = WebServer.arg("deepsleep");
   String espip = WebServer.arg("espip");
@@ -394,6 +397,13 @@ void handle_config() {
           strncpy(Settings.HttpHeader, httpheader.c_str(), sizeof(Settings.HttpHeader));
         if (Protocol[ProtocolIndex].defineHttpBody)
           strncpy(Settings.HttpBody, httpbody.c_str(), sizeof(Settings.HttpBody));
+
+        // Azure IoT Hub : save the connection string.
+        if (Protocol[ProtocolIndex].defineConnectionString)
+        {
+          memset(Settings.ConnectionString, 0x00, sizeof(Settings.ConnectionString));
+          strncpy(Settings.ConnectionString, cnxstring.c_str(), sizeof(Settings.ConnectionString));
+        }
 
         strncpy(SecuritySettings.ControllerUser, controlleruser.c_str(), sizeof(SecuritySettings.ControllerUser));
         strncpy(SecuritySettings.ControllerPassword, controllerpassword.c_str(), sizeof(SecuritySettings.ControllerPassword));
@@ -461,9 +471,12 @@ void handle_config() {
 
   if (Settings.Protocol)
   {
-    // HTTP URL : bypass controller domain/ip + port.
+    // Bypass controller domain/ip + port for :
+    // - HTTP request
+    // - Azure IoT Hub request
     byte ProtocolIndex = getProtocolIndex(Settings.Protocol);
-    if (!Protocol[ProtocolIndex].defineHttpUrl)
+    if (!Protocol[ProtocolIndex].defineHttpUrl &&
+        !Protocol[ProtocolIndex].defineConnectionString)
     {
       byte choice = Settings.UseDNS;
       String options[2];
@@ -560,9 +573,17 @@ void handle_config() {
       reply += F("</textarea>");
     }
 
+    // Azure IoT Hub connection string.
+    if (Protocol[ProtocolIndex].defineConnectionString)
+    {
+      reply += F("<TR><TD>Azure IoT Hub connection string:<TD><input type='text' name='cnxstring' maxlength='255' value='");
+      reply += Settings.ConnectionString;
+      reply += F("'>");
+    }
+
     if (Protocol[ProtocolIndex].defineHttpBody)
     {
-      reply += F("<TR><TD>HTTP Body:<TD><textarea name='httpbody' rows='8' cols='50' maxlength='500'>");
+      reply += F("<TR><TD>Payload:<TD><textarea name='httpbody' rows='8' cols='50' maxlength='500'>");
       reply += Settings.HttpBody;
       reply += F("</textarea>");
     }

@@ -121,6 +121,9 @@
 // TLS Support.
 #define TLS_THUMBPRINT_LEN          100
 
+// Azure IoT Hub Support.
+#define AZURE_IOTHUB_CNXSTR_LEN     255
+
 // Plugins.
 /*
 #define CPLUGIN_001
@@ -133,6 +136,7 @@
 #define CPLUGIN_008
 */
 #define CPLUGIN_009
+#define CPLUGIN_010
 
 // ********************************************************************************
 //   DO NOT CHANGE ANYTHING BELOW THIS LINE
@@ -365,6 +369,9 @@ struct SettingsStruct
   char          HttpHeader[HTTP_HEADER_MAX_LEN];
   char          HttpBody[HTTP_BODY_MAX_LEN];
 
+  // Azure IoTHub.
+  char          ConnectionString[AZURE_IOTHUB_CNXSTR_LEN];
+
 } Settings;
 
 struct ExtraTaskSettingsStruct
@@ -433,6 +440,9 @@ struct ProtocolStruct
 
   // TLS Support.
   boolean defineTlsThumbprint;
+
+  // Azure IoT Hub.
+  boolean defineConnectionString;
 
 } Protocol[CPLUGIN_MAX];
 
