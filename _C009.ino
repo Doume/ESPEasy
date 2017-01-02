@@ -212,8 +212,9 @@ void sendRequest(HTTPClient& client, String& payload)
   }
   else if (method.equals("PUT"))
   {
-    //sz = client.PUT(payload);
-    addLog(LOG_LEVEL_DEBUG, "HTTP PUT is not supported !");
+    // PUT seems to be not declared...
+    // sz = client.PUT(payload);
+    sz = client.sendRequest("PUT", payload);
   }
 
   // Log the result.
