@@ -1,10 +1,10 @@
 # ESPEasy
-This is a fork of Easy MultiSensor device based on ESP8266
-Forked from the Build 113
+This is a fork of Easy MultiSensor device based on ESP8266  
+Forked from the Build 113  
 Regarding ESPEasy stable versions including libraries are currently on SoureForge:
-- http://sourceforge.net/projects/espeasy/
-- Wiki: http://www.esp8266.nu
-- Forum: http://www.esp8266.nu/forum
+- <http://sourceforge.net/projects/espeasy/>
+- Wiki: <http://www.esp8266.nu>
+- Forum: <http://www.esp8266.nu/forum>
 
 # My Features
 - Generic HTTP request :
