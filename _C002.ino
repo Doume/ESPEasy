@@ -2,6 +2,8 @@
 //########################### Controller Plugin 002: Domoticz MQTT ######################################
 //#######################################################################################################
 
+#ifdef CPLUGIN_002
+
 #define CPLUGIN_ID_002         2
 #define CPLUGIN_NAME_002       "Domoticz MQTT"
 
@@ -212,3 +214,4 @@ boolean CPlugin_002(byte function, struct EventStruct *event, String& string)
   return success;
 }
 
+#endif

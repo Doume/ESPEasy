@@ -2,7 +2,8 @@
 //######################### Plugin 027: INA219 DC Voltage/Current sensor ################################
 //#######################################################################################################
 
-#define PLUGIN_027
+#ifdef PLUGIN_027
+
 #define PLUGIN_ID_027         27
 #define PLUGIN_NAME_027       "Voltage & Current (DC) - INA219"
 #define PLUGIN_VALUENAME1_027 "Voltage"
@@ -352,3 +353,4 @@ float Plugin_027_getCurrent_mA() {
   return valueDec;
 }
 
+#endif

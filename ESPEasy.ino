@@ -136,7 +136,45 @@
 #define CPLUGIN_008
 */
 #define CPLUGIN_009
-#define CPLUGIN_010
+//#define CPLUGIN_010
+
+// Protocols.
+/*
+#define PLUGIN_001
+#define PLUGIN_002
+#define PLUGIN_003
+#define PLUGIN_004
+*/
+#define PLUGIN_005
+/*
+#define PLUGIN_006
+#define PLUGIN_007
+#define PLUGIN_008
+#define PLUGIN_009
+#define PLUGIN_010
+#define PLUGIN_011
+#define PLUGIN_012
+#define PLUGIN_013
+#define PLUGIN_014
+#define PLUGIN_015
+#define PLUGIN_016
+#define PLUGIN_017
+#define PLUGIN_018
+#define PLUGIN_019
+#define PLUGIN_020
+#define PLUGIN_021
+#define PLUGIN_022
+#define PLUGIN_023
+#define PLUGIN_024
+#define PLUGIN_025
+#define PLUGIN_026
+#define PLUGIN_027
+#define PLUGIN_028
+#define PLUGIN_029
+#define PLUGIN_030
+#define PLUGIN_031
+#define PLUGIN_032
+*/
 
 // ********************************************************************************
 //   DO NOT CHANGE ANYTHING BELOW THIS LINE
@@ -230,8 +268,8 @@
 #define BOOT_CAUSE_COLD_BOOT                1
 #define BOOT_CAUSE_EXT_WD                  10
 
-#include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
+#include <ESP8266WiFi.h>
 #include <DNSServer.h>
 #include <WiFiUdp.h>
 #include <ESP8266WebServer.h>

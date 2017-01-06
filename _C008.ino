@@ -2,6 +2,8 @@
 //########################### Controller Plugin 008: Generic HTTP #######################################
 //#######################################################################################################
 
+#ifdef CPLUGIN_008
+
 #define CPLUGIN_ID_008         8
 #define CPLUGIN_NAME_008       "Generic HTTP"
 
@@ -146,3 +148,5 @@ boolean HTTPSend(struct EventStruct *event, byte varIndex, float value, unsigned
   client.flush();
   client.stop();
 }
+
+#endif

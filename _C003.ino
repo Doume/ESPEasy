@@ -2,6 +2,8 @@
 //########################### Controller Plugin 003: Nodo Telnet  #######################################
 //#######################################################################################################
 
+#ifdef CPLUGIN_003
+
 #define CPLUGIN_ID_003         3
 #define CPLUGIN_NAME_003       "Nodo Telnet"
 
@@ -104,3 +106,4 @@ boolean CPlugin_003(byte function, struct EventStruct *event, String& string)
   return success;
 }
 
+#endif

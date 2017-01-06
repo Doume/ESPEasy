@@ -2,6 +2,8 @@
 //########################### Controller Plugin 006: PiDome MQTT ########################################
 //#######################################################################################################
 
+#ifdef CPLUGIN_006
+
 #define CPLUGIN_ID_006         6
 #define CPLUGIN_NAME_006       "PiDome MQTT"
 
@@ -135,3 +137,5 @@ boolean CPlugin_006(byte function, struct EventStruct *event, String& string)
       return success;
   }
 }
+
+#endif

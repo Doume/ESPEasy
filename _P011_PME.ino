@@ -2,7 +2,8 @@
 //#################################### Plugin 011: Pro Mini Extender ####################################
 //#######################################################################################################
 
-#define PLUGIN_011
+#ifdef PLUGIN_011
+
 #define PLUGIN_ID_011         11
 #define PLUGIN_NAME_011       "ProMini Extender"
 #define PLUGIN_VALUENAME1_011 "Value"
@@ -230,3 +231,4 @@ boolean Plugin_011_Write(byte Par1, byte Par2)
   Wire.endTransmission();
 }
 
+#endif

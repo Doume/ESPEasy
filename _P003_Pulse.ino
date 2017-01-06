@@ -2,7 +2,8 @@
 //#################################### Plugin 003: Pulse  ###############################################
 //#######################################################################################################
 
-#define PLUGIN_003
+#ifdef PLUGIN_003
+
 #define PLUGIN_ID_003         3
 #define PLUGIN_NAME_003       "Pulse Counter"
 #define PLUGIN_VALUENAME1_003 "Count"
@@ -195,3 +196,5 @@ void Plugin_003_pulseinit(byte Par1, byte Index)
       break;
   }
 }
+
+#endif

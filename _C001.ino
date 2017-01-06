@@ -2,6 +2,8 @@
 //########################### Controller Plugin 001: Domoticz HTTP ######################################
 //#######################################################################################################
 
+#ifdef CPLUGIN_001
+
 #define CPLUGIN_ID_001         1
 #define CPLUGIN_NAME_001       "Domoticz HTTP"
 
@@ -212,4 +214,4 @@ boolean Domoticz_getData(int idx, float *data)
   return success;
 }
 
-
+#endif

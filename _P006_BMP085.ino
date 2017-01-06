@@ -2,7 +2,8 @@
 //######################## Plugin 006 BMP0685 I2C Barometric Pressure Sensor  ###########################
 //#######################################################################################################
 
-#define PLUGIN_006
+#ifdef PLUGIN_006
+
 #define PLUGIN_ID_006        6
 #define PLUGIN_NAME_006       "Temperature & Pressure - BMP085"
 #define PLUGIN_VALUENAME1_006 "Temperature"
@@ -257,3 +258,5 @@ boolean Plugin_006_bmp085_write8(uint8_t a, uint8_t d)
 
   return true;
 }
+
+#endif

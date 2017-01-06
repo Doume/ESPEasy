@@ -2,7 +2,8 @@
 //#################################### Plugin 019: PCF8574 ##############################################
 //#######################################################################################################
 
-#define PLUGIN_019
+#ifdef PLUGIN_019
+
 #define PLUGIN_ID_019         19
 #define PLUGIN_NAME_019       "Switch input - PCF8574"
 #define PLUGIN_VALUENAME1_019 "Switch"
@@ -230,3 +231,5 @@ boolean Plugin_019_Write(byte Par1, byte Par2)
     success = true;
   }
 }
+
+#endif

@@ -2,7 +2,8 @@
 //#################################### Plugin-017: PN532 RFID reader ####################################
 //#######################################################################################################
 
-#define PLUGIN_017
+#ifdef PLUGIN_017
+
 #define PLUGIN_ID_017         17
 #define PLUGIN_NAME_017       "RFID Reader - PN532"
 #define PLUGIN_VALUENAME1_017 "Tag"
@@ -399,4 +400,4 @@ int8_t Plugin_017_readAckFrame()
   return 0;
 }
 
-
+#endif

@@ -2,7 +2,8 @@
 //#################################### Plugin-010: LuxRead   ############################################
 //#######################################################################################################
 
-#define PLUGIN_010
+#ifdef PLUGIN_010
+
 #define PLUGIN_ID_010         10
 #define PLUGIN_NAME_010       "Luminosity - BH1750"
 #define PLUGIN_VALUENAME1_010 "Lux"
@@ -69,3 +70,5 @@ boolean Plugin_010(byte function, struct EventStruct *event, String& string)
   }      
   return success;
 }
+
+#endif

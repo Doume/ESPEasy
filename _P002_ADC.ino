@@ -2,7 +2,7 @@
 //#################################### Plugin 002: Analog ###############################################
 //#######################################################################################################
 
-#define PLUGIN_002
+#ifdef PLUGIN_002
 #define PLUGIN_ID_002         2
 #define PLUGIN_NAME_002       "Analog input"
 #define PLUGIN_VALUENAME1_002 "Analog"
@@ -54,3 +54,5 @@ boolean Plugin_002(byte function, struct EventStruct *event, String& string)
   }
   return success;
 }
+
+#endif

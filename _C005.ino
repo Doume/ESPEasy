@@ -2,6 +2,8 @@
 //########################### Controller Plugin 005: OpenHAB MQTT #######################################
 //#######################################################################################################
 
+#ifdef CPLUGIN_005
+
 #define CPLUGIN_ID_005         5
 #define CPLUGIN_NAME_005       "OpenHAB MQTT"
 
@@ -141,3 +143,4 @@ boolean CPlugin_005(byte function, struct EventStruct *event, String& string)
   }
 }
 
+#endif

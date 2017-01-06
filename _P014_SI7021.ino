@@ -3,7 +3,8 @@
 //#######################################################################################################
 // 12-10-2015 Charles-Henri Hallard, see my projects and blog at https://hallard.me
 
-#define PLUGIN_014
+#ifdef PLUGIN_014
+
 #define PLUGIN_ID_014        14
 #define PLUGIN_NAME_014       "Temperature & Humidity - SI7021"
 #define PLUGIN_VALUENAME1_014 "Temperature"
@@ -392,3 +393,5 @@ int8_t Plugin_014_si7021_setResolution(uint8_t res)
 
   return error;
 }
+
+#endif

@@ -2,7 +2,8 @@
 //#################################### Plugin 001: Input Switch #########################################
 //#######################################################################################################
 
-#define PLUGIN_001
+#ifdef PLUGIN_001
+
 #define PLUGIN_ID_001         1
 #define PLUGIN_NAME_001       "Switch input"
 #define PLUGIN_VALUENAME1_001 "Switch"
@@ -340,3 +341,5 @@ boolean Plugin_001(byte function, struct EventStruct *event, String& string)
   }
   return success;
 }
+
+#endif

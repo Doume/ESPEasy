@@ -2,7 +2,8 @@
 //#################################### Plugin 026: Analog ###############################################
 //#######################################################################################################
 
-#define PLUGIN_026
+#ifdef PLUGIN_026
+
 #define PLUGIN_ID_026         26
 #define PLUGIN_NAME_026       "System Info"
 #define PLUGIN_VALUENAME1_026 ""
@@ -116,3 +117,5 @@ boolean Plugin_026(byte function, struct EventStruct *event, String& string)
   }
   return success;
 }
+
+#endif

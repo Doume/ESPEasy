@@ -2,6 +2,8 @@
 //########################### Controller Plugin 004: ThingSpeak #########################################
 //#######################################################################################################
 
+#ifdef CPLUGIN_004
+
 #define CPLUGIN_ID_004         4
 #define CPLUGIN_NAME_004       "ThingSpeak"
 
@@ -143,3 +145,4 @@ boolean CPlugin_004(byte function, struct EventStruct *event, String& string)
   return success;
 }
 
+#endif

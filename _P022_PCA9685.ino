@@ -2,7 +2,8 @@
 //#################################### Plugin 022: PCA9685 ##############################################
 //#######################################################################################################
 
-#define PLUGIN_022
+#ifdef PLUGIN_022
+
 #define PLUGIN_ID_022         22
 #define PLUGIN_NAME_022       "PWM - PCA9685"
 #define PLUGIN_VALUENAME1_022 "PWM"
@@ -116,3 +117,4 @@ boolean Plugin_022_Write(byte Par1, int Par2)
   Wire.endTransmission();
 }
 
+#endif

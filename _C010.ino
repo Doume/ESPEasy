@@ -2,6 +2,8 @@
 //########################### Controller Plugin 010: Azure IoT Hub ######################################
 //#######################################################################################################
 
+#ifdef CPLUGIN_010
+
 #include <AzureIoTHub.h>
 #include <AzureIoTUtility.h>
 #include <AzureIoTProtocol_HTTP.h>
@@ -176,3 +178,5 @@ void AzureIoTHub_Send(struct EventStruct *event,
     IoTHubClient_LL_Destroy(client);
   }
 }
+
+#endif

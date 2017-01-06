@@ -16,7 +16,8 @@
  * Each chip has 4 analog inputs
  * This commando reads the analog input and stores the result into a variable
  \*********************************************************************************************/
-#define PLUGIN_007
+#ifdef PLUGIN_007
+
 #define PLUGIN_ID_007         7
 #define PLUGIN_NAME_007       "Analog input - PCF8591"
 #define PLUGIN_VALUENAME1_007 "Analog"
@@ -84,3 +85,4 @@ boolean Plugin_007(byte function, struct EventStruct *event, String& string)
   return success;
 }
 
+#endif

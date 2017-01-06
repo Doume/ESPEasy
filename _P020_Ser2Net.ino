@@ -2,7 +2,8 @@
 //#################################### Plugin 020: Ser2Net ##############################################
 //#######################################################################################################
 
-#define PLUGIN_020
+#ifdef PLUGIN_020
+
 #define PLUGIN_ID_020         20
 #define PLUGIN_NAME_020       "Serial Server"
 #define PLUGIN_VALUENAME1_020 "Ser2Net"
@@ -202,3 +203,4 @@ boolean Plugin_020(byte function, struct EventStruct *event, String& string)
   return success;
 }
 
+#endif

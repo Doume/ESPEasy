@@ -8,7 +8,8 @@
 //  Lux:[Lux#Lux#R]
 //  Baro:[Baro#Pressure#R]
 
-#define PLUGIN_023
+#ifdef PLUGIN_023
+
 #define PLUGIN_ID_023         23
 #define PLUGIN_NAME_023       "Display - OLED SSD1306"
 #define PLUGIN_VALUENAME1_023 "OLED"
@@ -494,3 +495,4 @@ static void Plugin_023_init_OLED(void)
   Plugin_023_sendcommand(0x00);            //Set Memory Addressing Mode ab Horizontal addressing mode
 }
 
+#endif

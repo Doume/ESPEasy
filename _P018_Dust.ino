@@ -2,7 +2,8 @@
 //#################################### Plugin 018: GP2Y10 ###############################################
 //#######################################################################################################
 
-#define PLUGIN_018
+#ifdef PLUGIN_018
+
 #define PLUGIN_ID_018 18
 #define PLUGIN_NAME_018 "Dust Sensor - Sharp GP2Y10"
 #define PLUGIN_VALUENAME1_018 "Dust"
@@ -82,3 +83,5 @@ boolean Plugin_018(byte function, struct EventStruct *event, String& string)
   }
   return success;
 }
+
+#endif

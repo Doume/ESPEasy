@@ -2,7 +2,8 @@
 //######################## Plugin 005: Temperature and Humidity sensor DHT 11/22 ########################
 //#######################################################################################################
 
-#define PLUGIN_005
+#ifdef PLUGIN_005
+
 #define PLUGIN_ID_005         5
 #define PLUGIN_NAME_005       "Temperature & Humidity - DHT"
 #define PLUGIN_VALUENAME1_005 "Temperature"
@@ -219,3 +220,4 @@ int Plugin_005_read_dht_dat(void)
   return result;
 }
 
+#endif

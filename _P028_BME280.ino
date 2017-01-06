@@ -2,7 +2,8 @@
 //#################### Plugin 028 BME280 I2C Temp/Hum/Barometric Pressure Sensor  #######################
 //#######################################################################################################
 
-#define PLUGIN_028
+#ifdef PLUGIN_028
+
 #define PLUGIN_ID_028        28
 #define PLUGIN_NAME_028       "Temperature & Humidity & Pressure - BME280"
 #define PLUGIN_VALUENAME1_028 "Temperature"
@@ -356,3 +357,4 @@ float Plugin_028_readAltitude(float seaLevel)
   return 44330.0 * (1.0 - pow(atmospheric / seaLevel, 0.1903));
 }
 
+#endif

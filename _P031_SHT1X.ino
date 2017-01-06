@@ -2,7 +2,8 @@
 //#################### Plugin 031: SHT10/SHT11/SHT15 Temp/Humidity Sensor ###############################
 //#######################################################################################################
 
-#define PLUGIN_031
+#ifdef PLUGIN_031
+
 #define PLUGIN_ID_031         31
 #define PLUGIN_NAME_031       "Temperature & Humidity - SHT1X"
 #define PLUGIN_VALUENAME1_031 "Temperature"
@@ -245,3 +246,5 @@ int Plugin_031_readData(const int bits)
 
   return val;
 }
+
+#endif

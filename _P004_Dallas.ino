@@ -2,7 +2,8 @@
 //#################################### Plugin 004: TempSensor Dallas DS18B20  ###########################
 //#######################################################################################################
 
-#define PLUGIN_004
+#ifdef PLUGIN_004
+
 #define PLUGIN_ID_004         4
 #define PLUGIN_NAME_004       "Temperature - DS18b20"
 #define PLUGIN_VALUENAME1_004 "Temperature"
@@ -469,3 +470,5 @@ uint8_t Plugin_004_DS_crc8( uint8_t *addr, uint8_t len)
   }
   return crc;
 }
+
+#endif

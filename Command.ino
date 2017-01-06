@@ -217,12 +217,14 @@ void ExecuteCommand(byte source, const char *Line)
   {
     success = true;
     float value = 0;
+#ifdef CPLUGIN_001
     if (Domoticz_getData(Par2, &value))
     {
       status = F("DomoticzGet ");
       status += value;
     }
     else
+#endif
       status = F("Error getting data");
   }
 
