@@ -36,12 +36,12 @@
 
 //   Simple Arduino sketch for ESP module, supporting:
 //   =================================================================================
-//   Simple switch inputs and direct GPIO output control to drive relais, mosfets, etc
-//   Analog input (ESP-7/12 only)
-//   Pulse counters
-//   Dallas OneWire DS18b20 temperature sensors
-//   DHT11/22 humidity sensors
-//   BMP085 I2C Barometric Pressure sensor
+//   01 Simple switch inputs and direct GPIO output control to drive relais, mosfets, etc
+//   02 Analog input (ESP-7/12 only)
+//   03 Pulse counters
+//   04 Dallas OneWire DS18b20 temperature sensors
+//   05 DHT11/22 humidity sensors
+//   06 BMP085 I2C Barometric Pressure sensor
 //   PCF8591 4 port Analog to Digital converter (I2C)
 //   RFID Wiegand-26 reader
 //   MCP23017 I2C IO Expanders
@@ -59,7 +59,7 @@
 //   OLED I2C display with SSD1306 driver
 //   MLX90614 I2C IR temperature sensor
 //   ADS1115 I2C ADC
-//   INA219 I2C voltage/current sensor
+//   26 INA219 I2C voltage/current sensor
 //   BME280 I2C temp/hum/baro sensor
 //   MSP5611 I2C temp/baro sensor
 
@@ -76,25 +76,25 @@
 // You can always change these during runtime and save to eeprom
 // After loading firmware, issue a 'reset' command to load the defaults.
 
-#define DEFAULT_NAME        "newdevice"         // Enter your device friendly name
-#define DEFAULT_SSID        "ssid"              // Enter your network SSID
-#define DEFAULT_KEY         "wpakey"            // Enter your network WPA key
-#define DEFAULT_SERVER      "192.168.0.8"       // Enter your Domoticz Server IP address
+#define DEFAULT_NAME        "ESP8266"         // Enter your device friendly name
+#define DEFAULT_SSID        "my_wifi_SSID"       // Enter your network SSID
+#define DEFAULT_KEY         "my_wifi_pass"         // Enter your network WPA key
+#define DEFAULT_SERVER      "192.168.2.31"       // Enter your Domoticz Server IP address
 #define DEFAULT_PORT        8080                // Enter your Domoticz Server port value
 #define DEFAULT_DELAY       60                  // Enter your Send delay in seconds
 #define DEFAULT_AP_KEY      "configesp"         // Enter network WPA key for AP (config) mode
 
 #define DEFAULT_USE_STATIC_IP   false           // true or false enabled or disabled set static IP
-#define DEFAULT_IP          "192.168.0.50"      // Enter your IP address
-#define DEFAULT_DNS         "192.168.0.1"       // Enter your DNS
-#define DEFAULT_GW          "192.168.0.1"       // Enter your gateway
+#define DEFAULT_IP          "192.168.2.80"      // Enter your IP address
+#define DEFAULT_DNS         "192.168.2.33"       // Enter your DNS
+#define DEFAULT_GW          "192.168.2.254"       // Enter your gateway
 #define DEFAULT_SUBNET      "255.255.255.0"     // Enter your subnet
 
 #define DEFAULT_MQTT_TEMPLATE false              // true or false enabled or disabled set mqqt sub and pub
 #define DEFAULT_MQTT_PUB    "sensors/espeasy/%sysname%/%tskname%/%valname%" // Enter your pub
 #define DEFAULT_MQTT_SUB    "sensors/espeasy/%sysname%/#" // Enter your sub
 
-#define DEFAULT_PROTOCOL    1                   // Protocol used for controller communications
+#define DEFAULT_PROTOCOL    2                   // Protocol used for controller communications
 //   1 = Domoticz HTTP
 //   2 = Domoticz MQTT
 //   3 = Nodo Telnet
@@ -102,6 +102,9 @@
 //   5 = OpenHAB MQTT
 //   6 = PiDome MQTT
 //   7 = EmonCMS
+//   8 = Generic HTTP
+//   9 = HTTP/S request
+//  10 = Azure IoT Hub
 #define UNIT                0
 
 #define FEATURE_TIME                     true
@@ -110,7 +113,7 @@
 // Enable FEATURE_ADC_VCC to measure supply voltage using the analog pin
 // Please note that the TOUT pin has to be disconnected in this mode
 // Use the "System Info" device to read the VCC value
-#define FEATURE_ADC_VCC                  false
+#define FEATURE_ADC_VCC                  true
 
 // HTTP Request field size for Settings.
 #define HTTP_METHOD_MAX_LEN         10
@@ -124,27 +127,36 @@
 // Azure IoT Hub Support.
 #define AZURE_IOTHUB_CNXSTR_LEN     255
 
-// Plugins.
-/*
+
+// Protocols. allow Domoticz HTTP or MQTT
+
 #define CPLUGIN_001
 #define CPLUGIN_002
+
+/*
+
 #define CPLUGIN_003
 #define CPLUGIN_004
 #define CPLUGIN_005
 #define CPLUGIN_006
 #define CPLUGIN_007
 #define CPLUGIN_008
-*/
 #define CPLUGIN_009
-//#define CPLUGIN_010
+#define CPLUGIN_010
+*/
 
-// Protocols.
-/*
+// Plugins.
+
+//Relay?
 #define PLUGIN_001
+/*
 #define PLUGIN_002
 #define PLUGIN_003
+
+// 1 Wire
 #define PLUGIN_004
 */
+//DHT
 #define PLUGIN_005
 /*
 #define PLUGIN_006
@@ -167,7 +179,10 @@
 #define PLUGIN_023
 #define PLUGIN_024
 #define PLUGIN_025
+*/
+// System info
 #define PLUGIN_026
+/*
 #define PLUGIN_027
 #define PLUGIN_028
 #define PLUGIN_029
@@ -179,7 +194,7 @@
 // ********************************************************************************
 //   DO NOT CHANGE ANYTHING BELOW THIS LINE
 // ********************************************************************************
-#define ESP_PROJECT_PID           2015050101L
+#define ESP_PROJECT_PID           2016012501L
 #define ESP_EASY
 #define VERSION                             9
 #define BUILD                             113
@@ -283,6 +298,13 @@
 #endif
 #include <ESP8266HTTPUpdateServer.h>
 ESP8266HTTPUpdateServer httpUpdater(true);
+
+//Doume modif for OTA updates 
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
+#include <ESP8266mDNS.h>
+/////////////////////////////
+
 #if ESP_CORE >= 210
   #include <base64.h>
 #endif
@@ -565,6 +587,11 @@ unsigned long loopCounterMax = 1;
 
 String eventBuffer = "";
 
+// Declare OTA parameters
+    int    ota_port = 8266;
+    char ota_host[20];
+    char ota_auth[20];
+
 /*********************************************************************************************\
  * SETUP
 \*********************************************************************************************/
@@ -685,6 +712,46 @@ void setup()
       rulesProcessing(event);
     }
 
+    // Doume Set OTA parameters
+    strcpy(ota_host,"ESP_OTA");
+    strcpy(ota_auth,"esp_ota");
+    ArduinoOTA.setPort(ota_port);
+    ArduinoOTA.setHostname(ota_host);
+    ArduinoOTA.setPassword(ota_auth);
+    ArduinoOTA.begin();
+    Serial.println(F("\nOTA : Service initiated"));
+
+    // Fill a table of vectors for OTA callbacks
+    ArduinoOTA.onStart([]() { 
+      Serial.println(F("\nOTA : Update Started"));
+    });
+
+    ArduinoOTA.onEnd([]() { 
+      Serial.println(F("\nOTA : Update complete : restarting"));
+    });
+
+    ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
+     Serial.printf("Progress: %u%%\n", (progress / (total / 100)));
+    });
+
+    ArduinoOTA.onError([](ota_error_t error) {
+      Serial.printf("OTA : Update Error[%u]: ", error);
+      if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
+      else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+      else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+      else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+      else if (error == OTA_END_ERROR) Serial.println("End Failed");
+      ESP.restart(); 
+    });
+    // just in case your sketch sucks, keep update OTA Available
+    // Trust me, when coding and testing it happens, this could save
+    // the need to connect FTDI to reflash
+    // Usefull just after 1st connexion when called from setup() before
+    // launching potentially buggy main()
+    ArduinoOTA.handle();
+    Serial.println(F("\nOTA : Service started"));
+
+    
     // Setup timers
     if (bootMode == 0)
     {
@@ -763,6 +830,9 @@ void loop()
   }
   else
     delay(1);
+
+  ArduinoOTA.handle();
+  
 }
 
 
@@ -1087,4 +1157,3 @@ void backgroundtasks()
   statusLED(false);
   yield();
 }
-
