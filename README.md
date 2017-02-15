@@ -26,7 +26,9 @@ Regarding ESPEasy stable versions including libraries are currently on SoureForg
   * Build version is appended with the "Fork olileger" token
   
 # My features
-- Add OTA support, to allow firmware flash through WiFi
+   WORK IN PROGRESS, please be patient....
+   
+- Add OTA support, to allow firmware flash through WiFi (Tested only on Wemos D1 )
 - Modify Plugin_01 to don't keep the builtin Led on...
 - Build version with my Name :-) :
   * Build version is appended with the "Doume" token
