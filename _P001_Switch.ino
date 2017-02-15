@@ -224,6 +224,12 @@ boolean Plugin_001(byte function, struct EventStruct *event, String& string)
             addLog(LOG_LEVEL_INFO, log);
             SendStatus(event->Source, getPinStateJSON(SEARCH_PIN_STATE, PLUGIN_ID_001, event->Par1, log, 0));
           }
+          //Try to put led off on each request
+          pinMode(BUILTIN_LED, OUTPUT);
+          digitalWrite(BUILTIN_LED, HIGH);
+          String log = "Set Led off"; 
+          addLog(LOG_LEVEL_INFO,log);
+          ////////////////////////////////////////  
         }
 
         if (command == F("pwm"))
