@@ -186,7 +186,27 @@ void handle_root() {
     }
 
     reply += F("<TR><TD>Uptime:<TD>");
-    reply += wdcounter / 2;
+    int min = wdcounter / 2;
+    int hours = 0;
+    int days = 0;
+    if (min > 59)
+    {
+      hours = min / 60;
+      min = min - (hours * 60);
+      if ( hours < 24 )
+      {
+        reply += hours;
+        reply += F(" h ");
+      } else {
+        days = hours / 24;
+        hours = hours - (days * 24 );
+        reply += days;
+        reply += F(" days ");
+        reply += hours;
+        reply += F(" h ");
+      }
+    }
+    reply += min;
     reply += F(" minutes");
 
     if (WiFi.status() == WL_CONNECTED)
